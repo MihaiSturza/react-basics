@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Radium, {StyleRoot} from 'radium';
 import Person from './Person/Person';
 
 class App extends Component {
@@ -55,12 +56,17 @@ class App extends Component {
 
   render() {
     const style = {
-      backgroundColor: 'white',
-      color: 'black',
+      backgroundColor: 'green',
+      color: 'white',
+      marginTop: '10px',
       font: 'inherit',
       border: '1px solid blue',
       padding: '8px',
-      cursor: 'pointer'
+      cursor: 'pointer',
+      ':hover': {
+        backgroundColor: 'lightgreen',
+        color: 'black'
+      }
     }
 
 
@@ -78,10 +84,26 @@ class App extends Component {
             changed={(event) => this.nameChangedHandler(event, person.id)} />
           }) }
         </div>
-      )
+      );
+      style.backgroundColor = 'red';
+      style[':hover'] = {
+        backgroundColor: 'salmon',
+        color: 'black'
+      };
     }
 
+    const classes = [];
+    if(this.state.persons.length <= 2) {
+      classes.push('red');
+    }
+    if(this.state.persons.length <= 1) {
+      classes.push('bold');
+    }
+    
+
+
     return (
+      <StyleRoot>
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
@@ -89,16 +111,16 @@ class App extends Component {
           Learn React Basics
         </p>
         </header>
+        <p className={classes.join(' ')}>This is really working</p>
         <button
           style={style} 
           onClick={ this.togglePersonsHandler }>Show names</button> 
-         
       { persons }  
-
       </div>
+      </StyleRoot>
     );
     // return React.createElement('div', {className: 'App'}, React.createElement('h2', null, 'Test in progres...'));
   }
 }
 
-export default App;
+export default Radium(App);
